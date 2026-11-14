@@ -1,13 +1,13 @@
 {
   "name": "dsh-usage-stats",
   "description": "Token usage stats, provider balances, and subscription quotas for the dsh web GUI — with a detached-session archive so deleting a conversation does not erase its history",
-  "version": "0.2.27-dsh.1",
+  "version": "0.2.27-dsh.2",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FireLv/dsh-usage-stats.git"
+    "url": "git+https://gitea.946620884.xyz:8888/admin/dsh-usage-stats.git"
   },
-  "homepage": "https://github.com/FireLv/dsh-usage-stats#readme",
-  "bugs": "https://github.com/FireLv/dsh-usage-stats/issues",
+  "homepage": "https://gitea.946620884.xyz:8888/admin/dsh-usage-stats#readme",
+  "bugs": "https://gitea.946620884.xyz:8888/admin/dsh-usage-stats/issues",
   "keywords": [
     "deepseek",
     "deepseek-harness",

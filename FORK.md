@@ -71,7 +71,7 @@ if (!attached.has(id) && !persistedIds.has(id)) delete cache.sessions[id];
 | 文件 | 状态 |
 |---|---|
 | `lib/archive.js` | **新增** |
-| `lib/index.js` | **修改**（仅 `collectUsage()` 相关，+45/-1） |
+| `lib/index.js` | **修改**（`collectUsage()` 归档集成 + `rejectForeignCaller` 地址校验放宽） |
 | `README.md` | **修改**（补充归档说明） |
 | `package.json` | **修改**（版本号与仓库元数据） |
 | `FORK.md` | **新增**（本文件） |
@@ -79,6 +79,25 @@ if (!attached.has(id) && !persistedIds.has(id)) delete cache.sessions[id];
 
 `lib/accounts.js`、`lib/balance.js`、`lib/client.js`、`lib/subscriptions.js`、`lib/usage.js`
 以及 `scripts/`、`catalog/`、`.github/workflows/`、`package-lock.json` 均保持基线原样。
+
+---
+
+## 版本记录
+
+### `0.2.27-dsh.2`
+
+- **放宽用量接口的对端地址校验**（`lib/index.js` 的 `rejectForeignCaller`）。
+  上游只接受回环地址，导致通过局域网 IP 或反向代理（例如
+  `dsh-mobile.946620884.xyz:8888`）打开面板时，`/api/usage-stats/*`
+  一律返回 `HTTP 403 {"ok":false,"error":"forbidden"}`。
+  现在接受**回环 + RFC1918 私有 IPv4**（含 `::ffff:` 映射形式），公网地址仍拒绝。
+- 新增环境变量 `DSH_USAGE_STATS_STRICT_LOOPBACK=1`，可恢复上游的严格回环模式。
+- 取舍说明：放宽模式下 `Host` 头不再作为安全边界（对端已被限定在私有网段），
+  这同时支持「局域网 IP 直连」与「反向代理域名」两种访问方式。
+
+### `0.2.27-dsh.1`
+
+- 首个 fork 版本：新增 `lib/archive.js`，实现**删除会话后仍保留历史用量**。
 
 ---
 
