@@ -1,7 +1,11 @@
 # dsh-usage-stats
 
-[![GitHub Release](https://img.shields.io/github/v/release/menghun3-cn/dsh-usage-stats?display_name=tag&sort=semver&color=1f6feb)](https://github.com/menghun3-cn/dsh-usage-stats/releases/latest)
-[![CI](https://github.com/menghun3-cn/dsh-usage-stats/actions/workflows/ci.yml/badge.svg)](https://github.com/menghun3-cn/dsh-usage-stats/actions/workflows/ci.yml)
+> **本仓库是 fork**：基线为 [`menghun3-cn/dsh-usage-stats`](https://github.com/menghun3-cn/dsh-usage-stats) 的 tag `v0.2.27`，版本号 `0.2.27-dsh.1`。
+> 相对基线只做了一处功能性改动：**删除会话后仍保留其历史用量**（`lib/archive.js` + `lib/index.js` 的 `collectUsage()`）。
+> 完整改动清单、文件级差异与升级方法见 [FORK.md](FORK.md)。
+
+[![GitHub Release](https://img.shields.io/github/v/release/FireLv/dsh-usage-stats?display_name=tag&sort=semver&color=1f6feb)](https://github.com/FireLv/dsh-usage-stats/releases/latest)
+[![CI](https://github.com/FireLv/dsh-usage-stats/actions/workflows/ci.yml/badge.svg)](https://github.com/FireLv/dsh-usage-stats/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-2da44e)](LICENSE)
 
 为 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 网页端提供 **Token 用量统计面板**。
@@ -43,7 +47,7 @@ Token usage analytics for the DeepSeek Harness Web GUI (`dsh web`).
 | --- | --- |
 | 桌面端（Electron，DSH 0.2.0-rc.2+） | `dsh plugin --profile desktop add …`（见下方「桌面版 GUI」） |
 | 浏览器端（`dsh web` 或 0.1.x CLI） | `dsh plugin --profile web add …`（见下方「Web profile」） |
-| `dsh plugin` 不可用 | `npx --yes github:menghun3-cn/dsh-usage-stats`（见下方「兼容安装器」） |
+| `dsh plugin` 不可用 | `npx --yes github:FireLv/dsh-usage-stats`（见下方「兼容安装器」） |
 | 想让 AI 替你装 | 展开「交给 AI 安装」整段复制粘贴 |
 
 ## 快速安装
@@ -73,7 +77,7 @@ Token usage analytics for the DeepSeek Harness Web GUI (`dsh web`).
    $env:GIT_CONFIG_VALUE_1 = 'git@github.com:'
    & "C:\Program Files\DeepSeek Harness\DeepSeek Harness.exe" --expose-internals `
      "<dsh>\node_modules\@deepseek-ai\dsh-desktop-host\lib\cli.js" `
-     plugin --profile desktop add "git+https://github.com/menghun3-cn/dsh-usage-stats.git"
+     plugin --profile desktop add "git+https://github.com/FireLv/dsh-usage-stats.git"
 4. 打开 ~\.dsh\profiles\desktop\cordis.patch.yml，在文件末尾追加（若已存在
    id 为 usage-stats 的条目则跳过，不要重复追加）：
    - insert:
@@ -108,7 +112,7 @@ $env:GIT_CONFIG_KEY_1 = 'url.https://github.com/.insteadOf'
 $env:GIT_CONFIG_VALUE_1 = 'git@github.com:'
 & "C:\Program Files\DeepSeek Harness\DeepSeek Harness.exe" --expose-internals `
   "<dsh>\node_modules\@deepseek-ai\dsh-desktop-host\lib\cli.js" `
-  plugin --profile desktop add "git+https://github.com/menghun3-cn/dsh-usage-stats.git"
+  plugin --profile desktop add "git+https://github.com/FireLv/dsh-usage-stats.git"
 ```
 
 `dsh plugin add` 只安装仓库依赖，不会自动写补丁。手动在 `~/.dsh/profiles/desktop/cordis.patch.yml` **末尾**追加挂载行：
@@ -130,14 +134,14 @@ $env:GIT_CONFIG_VALUE_1 = 'git@github.com:'
   plugin --profile desktop update dsh-usage-stats
 ```
 
-> 推荐显式 `git+https://github.com/menghun3-cn/dsh-usage-stats.git`：pnpm 会把 `github:` 规范化为 SSH，无 SSH key 时报 `Permission denied (publickey)`。GitHub 安装跟随仓库 HEAD；要固定版本可给仓库打 tag（如 `v0.2.16`）后使用 `...git#v0.2.16` 形式的 spec。与 `npx` 兼容安装器二选一，不要同时启用两种安装路径。
+> 推荐显式 `git+https://github.com/FireLv/dsh-usage-stats.git`：pnpm 会把 `github:` 规范化为 SSH，无 SSH key 时报 `Permission denied (publickey)`。GitHub 安装跟随仓库 HEAD；要固定版本可给仓库打 tag（如 `v0.2.16`）后使用 `...git#v0.2.16` 形式的 spec。与 `npx` 兼容安装器二选一，不要同时启用两种安装路径。
 
 ### Web profile
 
 需要 DeepSeek Harness `web` profile（`@deepseek-ai/dsh >= 0.1.0-rc.6`）。
 
 ```bash
-dsh plugin --profile web add "github:menghun3-cn/dsh-usage-stats"
+dsh plugin --profile web add "github:FireLv/dsh-usage-stats"
 ```
 
 然后重启已经运行的 `dsh web`，并在浏览器中硬刷新。
@@ -152,7 +156,7 @@ dsh plugin --profile web add "github:menghun3-cn/dsh-usage-stats"
 PowerShell、命令提示符和 macOS/Linux 终端使用同一条命令：
 
 ```bash
-npx --yes github:menghun3-cn/dsh-usage-stats
+npx --yes github:FireLv/dsh-usage-stats
 ```
 
 安装器会把运行文件复制到 `~/.dsh/profiles/node_modules/dsh-usage-stats`，并在 `profiles/web/cordis.patch.yml` 中幂等启用插件。重复运行即可更新，不会重复追加配置。设置了 `DSH_HOME` 时使用该目录。
@@ -161,13 +165,13 @@ npx --yes github:menghun3-cn/dsh-usage-stats
 
 ```bash
 # 预览，不修改文件
-npx --yes github:menghun3-cn/dsh-usage-stats --dry-run
+npx --yes github:FireLv/dsh-usage-stats --dry-run
 
 # 检查现有安装
-npx --yes github:menghun3-cn/dsh-usage-stats --check
+npx --yes github:FireLv/dsh-usage-stats --check
 
 # 安装但不修改 Cordis patch
-npx --yes github:menghun3-cn/dsh-usage-stats --no-enable
+npx --yes github:FireLv/dsh-usage-stats --no-enable
 ```
 
 无法使用 `npx` 时可从源码运行 `node scripts/install.mjs`。
@@ -175,7 +179,7 @@ npx --yes github:menghun3-cn/dsh-usage-stats --no-enable
 只获准检查而不能修改时运行：
 
 ```bash
-npx --yes github:menghun3-cn/dsh-usage-stats --check
+npx --yes github:FireLv/dsh-usage-stats --check
 ```
 
 安装器退出码：未知参数返回 `2`；文件、版本或配置验证失败返回非零；成功时输出已验证版本、安装目录和 patch 路径。
@@ -195,6 +199,7 @@ npx --yes github:menghun3-cn/dsh-usage-stats --check
 ## 数据保留
 
 - 服务端按「日」聚合持久化到 `~/.dsh/storages/usage-stats-cache.json`，只保留**最近 400 天**（12 个月 + 余量），每次聚合时自动裁剪最旧的天，缓存文件大小有界。
+- **删除会话不重写历史**：宿主不再能枚举某个会话时，它已折叠的按日/按模型贡献会移入 `~/.dsh/storages/usage-stats-archive.json`，继续计入今日/本月/累计。归档与增量缓存分开存放，缓存版本升级或损坏重建都不会清掉已删会话的历史；若该会话后来被恢复，先按日志重算、成功后再移除归档条目，不会双计。归档最多保留 2000 个已删会话、每日最多 400 天。
 - 统计从会话事件进行**增量折叠**，不逐条重放历史；`0.1.x` 的旧缓存在不兼容时会被识别并重建。
 - `0.2.5` 之前版本的 providers / balance / token-plan 账户卡片功能已移除，插件现在是纯 token 面板；对应的 `/api/usage-stats/providers|account|balance|subscriptions` 路由保留为兼容空壳（`not-configured`）。
 
@@ -202,7 +207,7 @@ npx --yes github:menghun3-cn/dsh-usage-stats --check
 
 - 面板与徽标只显示聚合后的 Token 数字；凭据、提示词、回复、文件路径都不进入浏览器响应、缓存或日志。
 - 插件端点仅接受 GET，并同时校验 peer socket 与 Host；非回环请求返回 `403`，其他方法返回 `405`；所有响应均为 JSON 并带 `Cache-Control: no-cache`。
-- 用量缓存 `~/.dsh/storages/usage-stats-cache.json` 只保存聚合 Token、会话 id、不透明 revision 与折叠游标。
+- 用量缓存 `~/.dsh/storages/usage-stats-cache.json` 只保存聚合 Token、会话 id、不透明 revision 与折叠游标；已删会话归档 `~/.dsh/storages/usage-stats-archive.json` 同样只保存聚合 Token 与归档时间。
 
 本机反向代理会让插件看到代理自身的回环地址。请勿把端点经反向代理暴露到局域网或公网；确需代理时必须在代理层增加可靠认证与访问控制。安全问题请按 [SECURITY.md](SECURITY.md) 私下报告。
 
